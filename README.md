@@ -5,10 +5,11 @@ docker-osticket
 
 Docker image for running version 1.14.1 of [OSTicket](http://osticket.com/).
 
-This image has been created from the original docker-osticket image by [Petter A. Helset](mailto:petter@helset.eu).
+This image has been created from [CampbellSoftwareSolutions/docker-osticket](https://github.com/CampbellSoftwareSolutions/docker-osticket), which is then based off the original docker-osticket image by [Petter A. Helset](mailto:petter@helset.eu).
 
 It has a few modifications:
 
+  * Updated to use Apache2 as the webserver instead of nginx (osTicket does not offically support nginx)
   * Documentation added, hurray!
   * Base OS image fixed to Alpine Linux
   * AJAX issues fixed that made original image unusable
@@ -16,10 +17,10 @@ It has a few modifications:
   * Automates configuration file & database installation
   * EMail support
 
-OSTicket is being served by [nginx](http://wiki.nginx.org/Main) using [PHP-FPM](http://php-fpm.org/) with PHP 7.2.
+OSTicket is being served by [apache2](https://httpd.apache.org/) using [PHP-FPM](http://php-fpm.org/) with PHP 7.2.
 PHP7's [mail](http://php.net/manual/en/function.mail.php) function is configured to use [msmtp](http://msmtp.sourceforge.net/) to send out-going messages.
 
-The `setup/` directory has been renamed as `setup_hidden/` and the file system permissions deny nginx access to this
+The `setup/` directory has been renamed as `setup_hidden/` and the file system permissions deny apache access to this
 location. It was not removed as the setup files are required as part of the automatic configuration during container
 start.
 
@@ -171,9 +172,9 @@ container or the host filesystem.
 This is the location where language packs can be added. There are several languages included in this image.
 If you want to add / change them, you can use this volume.
 
-`/var/log/nginx`
+`/var/log/apache2`
 
-nginx will store it's access & error logs in this location. If you wish to expose these to automatic log
+httpd will store it's access & error logs in this location. If you wish to expose these to automatic log
 collection tools then you should mount this volume.
 
 # Environmental Variables

@@ -13,9 +13,7 @@ php /data/bin/install.php
 echo Applying configuration file security
 chmod 644 /data/upload/include/ost-config.php
 
-mkdir -p /run/nginx
-chown -R www-data:www-data /run/nginx
-chown -R www-data:www-data /var/lib/nginx
+chown -R apache:www-data /var/log/apache2
 mkdir -p /var/log/php
 chown -R www-data:www-data /var/log/php
 

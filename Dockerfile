@@ -15,7 +15,6 @@ RUN set -x \
     && chmod -R go= /data/upload/setup_hidden
 
 FROM php:7.3-fpm-alpine
-MAINTAINER Martin Campbell <martin@campbellsoftware.co.uk>
 # environment for osticket
 ENV HOME=/data
 # setup workdir
@@ -24,17 +23,18 @@ COPY --from=deployer /data/upload upload
 RUN set -x && \
     # requirements and PHP extensions
     apk add --no-cache --update \
+        apache2 apache2-proxy apache2-ssl \
         wget \
         msmtp \
         ca-certificates \
         supervisor \
-        nginx \
         libpng \
         c-client \
         openldap \
         libintl \
         libxml2 \
         icu \
+        libzip-dev \
         openssl && \
     apk add --no-cache --virtual .build-deps \
         imap-dev \
@@ -51,6 +51,7 @@ RUN set -x && \
     docker-php-ext-install gd curl ldap mysqli sockets gettext mbstring xml intl opcache && \
     docker-php-ext-configure imap --with-imap-ssl && \
     docker-php-ext-install imap && \
+    docker-php-ext-configure zip --with-libzip=/usr/include && docker-php-ext-install zip && \
     pecl install apcu && docker-php-ext-enable apcu && \
     apk del .build-deps && \
     rm -rf /var/cache/apk/* && \
@@ -66,10 +67,8 @@ RUN set -x && \
     wget -nv -O upload/include/plugins/auth-ldap.phar https://s3.amazonaws.com/downloads.osticket.com/plugin/auth-ldap.phar && \
     # Create msmtp log
     touch /var/log/msmtp.log && \
-    chown www-data:www-data /var/log/msmtp.log && \
-    # File upload permissions
-    chown nginx:www-data /var/tmp/nginx && chmod g+rx /var/tmp/nginx
+    chown www-data:www-data /var/log/msmtp.log
 COPY files/ /
-VOLUME ["/data/upload/include/plugins","/data/upload/include/i18n","/var/log/nginx"]
+VOLUME ["/data/upload/include/plugins","/data/upload/include/i18n","/var/log/apache2"]
 EXPOSE 80
 CMD ["/data/bin/start.sh"]
