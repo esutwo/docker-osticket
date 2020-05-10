@@ -1,2 +1,5 @@
 # Ignore user specific IDEA settings
 .idea/
+.env
+logs
+plugins

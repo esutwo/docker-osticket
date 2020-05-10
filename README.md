@@ -3,15 +3,14 @@ docker-osticket
 
 # Introduction
 
-Docker image for running version 1.14.1 of [OSTicket](http://osticket.com/).
+Docker image for running version 1.14.1 of [OSTicket](http://osticket.com/). This image has been created from [CampbellSoftwareSolutions/docker-osticket](https://github.com/CampbellSoftwareSolutions/docker-osticket), which is then based off the original docker-osticket image by [Petter A. Helset](mailto:petter@helset.eu).
 
-This image has been created from [CampbellSoftwareSolutions/docker-osticket](https://github.com/CampbellSoftwareSolutions/docker-osticket), which is then based off the original docker-osticket image by [Petter A. Helset](mailto:petter@helset.eu).
+**PLEASE NOTE** - *I am only posting this publicly simply if this helps anyone else. We are using a variation of this image because a plugin we were using did NOT work with nginx, and we noticed some other small issues. Personally, we have no issue with apache, and if thats what is supported, we felt our image should be using it.*
 
 It has a few modifications:
 
   * Updated to use Apache2 as the webserver instead of nginx (osTicket does not offically support nginx)
   * Use build ARGs to define versions of PHP, Apache2, and osTicket
-  * Documentation added, hurray!
   * Base OS image fixed to Alpine Linux
   * AJAX issues fixed that made original image unusable
   * Now designed to work with a linked [MySQL](https://registry.hub.docker.com/u/library/mysql/) docker container.

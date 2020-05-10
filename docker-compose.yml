@@ -1,0 +1,39 @@
+version: '3'
+
+# THIS IS AN EXAMPLE COMPOSE FILE - ADJUSTMENTS ARE ALMOST DEFINITELY REQUIRED
+
+services:
+
+  osticket:
+    build:
+      context: ./
+      args:
+        OSTICKET_VERSION: 1.14.1
+        APACHE2_VERSION: 2.4.43
+        PHP_VERSION: 7.3
+    ports:
+      - '80:80'
+    environment:
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_HOST: "mariadb"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      INSTALL_SECRET: "${OSTICKET_SECRET}"
+      INSTALL_EMAIL: "${INSTALL_EMAIL}"
+      INSTALL_URL: "${INSTALL_URL}"
+    volumes:
+      - ./plugins:/data/upload/include/plugins:rw
+      - ./logs:/var/log/apache2:rw
+
+  mariadb:
+    image: mariadb:latest
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+
+volumes:
+  db:
