@@ -10,6 +10,7 @@ This image has been created from [CampbellSoftwareSolutions/docker-osticket](htt
 It has a few modifications:
 
   * Updated to use Apache2 as the webserver instead of nginx (osTicket does not offically support nginx)
+  * Use build ARGs to define versions of PHP, Apache2, and osTicket
   * Documentation added, hurray!
   * Base OS image fixed to Alpine Linux
   * AJAX issues fixed that made original image unusable
